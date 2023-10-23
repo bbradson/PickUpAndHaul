@@ -40,7 +40,11 @@ public class WorkGiver_HaulToInventory : WorkGiver_HaulGeneral
 	public class ThingPositionComparer : IComparer<Thing>
 	{
 		public IntVec3 rootCell;
-		public int Compare(Thing x, Thing y) => (x.Position - rootCell).LengthHorizontalSquared.CompareTo((y.Position - rootCell).LengthHorizontalSquared);
+		public int Compare(Thing x, Thing y)
+			=> (x.Position - rootCell).LengthHorizontalSquared.CompareTo((y.Position - rootCell).LengthHorizontalSquared)
+			is var distanceComparison && distanceComparison != 0
+			? distanceComparison
+			: x.thingIDNumber.CompareTo(y.thingIDNumber);
 	}
 
 	public override bool HasJobOnThing(Pawn pawn, Thing thing, bool forced = false)
